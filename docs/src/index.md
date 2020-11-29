@@ -1,12 +1,32 @@
-```@meta
-CurrentModule = MultiObjectiveProblems
+# MultiObjectiveProblems.jl Documentation 
+
+This package provides some test problems for multiobjective optimization.
+All problems are considered to be of the form
+```math
+\min_{\mathbf x\in \mathcal{X}}
+\begin{bmatrix}
+f_1(\mathbf x)\\ \vdots \\f_k(\mathbf x)
+\end{bmatrix}
+```
+For now only unconstrained and finitely box constrained problems are provided, 
+i.e. ``\mathcal{X} = ℝ^n`` or 
+``\mathcal{X} = \{\mathbf x \in ℝ^n : \mathbf l \le \mathbf x \le \mathbf u \}``.
+
+Each problem is a subtype of `MOP`. 
+```@docs 
+MOP
 ```
 
-# MultiObjectiveProblems
-
-```@index
+Consider for example the canonical 2-Parabola example
+```math 
+\min_{\mathbf x\in ℝ^2} 
+\begin{bmatrix}
+(x_1 - 1)^2 + (x_2 - 1)^2 \\
+(x_1 + 1)^2 + (x_2 + 1)^2
+\end{bmatrix}.
 ```
-
-```@autodocs
-Modules = [MultiObjectiveProblems]
+It is provided as `TwoParabolasUnconstrained`.
+Simply initialize an instance via
+```
+julia> mop = TwoParabolasUnconstrained();
 ```

@@ -1,19 +1,6 @@
-using MultiObjectiveProblems
 using Documenter
 
-DocMeta.setdocmeta!(MultiObjectiveProblems, :DocTestSetup, :(using MultiObjectiveProblems); recursive=true)
+push!(LOAD_PATH, joinpath(@__DIR__,  "../src/") )
+using MultiObjectiveProblems
 
-makedocs(;
-    modules=[MultiObjectiveProblems],
-    authors="Manuel Berkemeier <manuelbb@math.upb.de>",
-    repo="https://git.cs.uni-paderborn.de/manuelbb/MultiObjectiveProblems.jl/blob/{commit}{path}#{line}",
-    sitename="MultiObjectiveProblems.jl",
-    format=Documenter.HTML(;
-        prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://manuelbb.gitlab.io/MultiObjectiveProblems.jl",
-        assets=String[],
-    ),
-    pages=[
-        "Home" => "index.md",
-    ],
-)
+makedocs(sitename="MultiObjectiveProblems Documentation")
