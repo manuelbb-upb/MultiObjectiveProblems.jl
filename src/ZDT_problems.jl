@@ -1,7 +1,8 @@
-export ZDT1, ZDT2, ZDT3, ZDT4, ZDT6;
+export ZDT, ZDT1, ZDT2, ZDT3, ZDT4, ZDT6;
 
 # Problems taken from 
 # Zitzler et al. - 2000 - Comparison of Multiobjective Evolutionary Algorithms
+abstract type ZDT <: MOP end;
 
 zdt_ref_string = "Zitzler et al. - 2000 - Comparison of Multiobjective Evolutionary Algorithms";
 
@@ -9,14 +10,14 @@ for i ∈ [1,2,3,4,6]
     type_name = Symbol("ZDT", i)
     @eval begin 
         $("""
-            struct ZDT$i <: MOP 
+            struct ZDT$i <: ZDT 
                 n_vars :: Int = 2;
             end
 
         Instance of a ZDT problem as given in 
         ( $zdt_ref_string )
         """)
-        @with_kw struct $type_name <: MOP 
+        @with_kw struct $type_name <: ZDT
             n_vars :: Int = 2;
         end
         num_vars( mop :: $type_name ) = mop.n_vars;
@@ -36,7 +37,7 @@ for i ∈ [1,2,3,4,6]
     elseif i == 4
         @eval begin 
             constraints( mop :: $type_name ) = Box( 
-                [ -1.0; fill(-5.0, mop.n_vars - 1) ],
+                [ 0; fill(-5.0, mop.n_vars - 1) ],
                 [ 1.0; fill(5.0, mop.n_vars - 1) ]
             );
         end
@@ -120,6 +121,8 @@ end
 
 function get_points( sample_func :: SamplingFunction, mop :: ZDT3,
         ::Val{:ParetoSet}, num_points :: Int; method = :regular )
+    # see 
+    # https://sop.tik.ee.ethz.ch/download/supplementary/testproblems/zdt3/index.php
 
     chunk_size = num_points ÷ 5;
     
