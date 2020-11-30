@@ -28,5 +28,16 @@ Consider for example the canonical 2-Parabola example
 It is provided as `TwoParabolasUnconstrained`.
 Simply initialize an instance via
 ```
-julia> mop = TwoParabolasUnconstrained();
+mop = TwoParabolasUnconstrained();
 ```
+
+This problem has 2 objectives
+```
+julia> num_objectives( mop ) 
+2
+```
+We can retrieve them individually as 
+```
+f1, f2 = get_objectives(mop);
+```
+They take vector valued arguments of type `Vector{R} where R<:Real`.
