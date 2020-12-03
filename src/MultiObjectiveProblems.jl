@@ -7,7 +7,8 @@ using Parameters: @with_kw
 
 export MOP, SamplingFunction, FixedPointSet, Constraints, Box
 export get_objectives, get_vector_objective, get_gradients, get_omega_function, constraints,
-    get_pareto_set, get_pareto_front, get_points, get_scatter_arrays, get_scatter_points;
+    get_pareto_set, get_pareto_front, get_points, get_scatter_arrays, get_scatter_points,
+    get_random_point, get_ideal_point;
 
 abstract type Constraints end;
 struct Box <:Constraints 
@@ -36,6 +37,8 @@ function num_vars( :: MOP) end;
 function num_objectives( :: MOP ) end;
     
 # non-mandatory
+@doc "Return the ideal point of the problem."
+function get_ideal_point( ::MOP ) end;
 function constraints( mop :: M where M <: MOP ) end;
 function get_vector_objective( mop :: M where M<:MOP ) 
     func_array = get_objectives( mop );
@@ -73,12 +76,21 @@ function get_omega_function( mop :: M where M <: MOP)
 
             JuMP.optimize!(prob)
             ω = -JuMP.value(α);
+            @show JuMP.value.(d);
             return ω 
         catch e
             return -Inf
         end
     end
     return omega_function
+end
+
+function get_random_point( mop:: M where M <: MOP )
+    if isa( constraints(mop), Box )
+        lb = constraints(mop).lb; 
+        w = constraints(mop).ub .- lb;
+        return lb .+ w .* rand( length(lb) );
+    end
 end
 
 function get_pareto_set( :: MOP ) end;

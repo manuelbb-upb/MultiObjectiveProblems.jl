@@ -52,6 +52,12 @@ function get_objectives(mop::ZDT1)
     return [f1; f2]
 end
 
+function get_ideal_point(mop::ZDT1)
+    # min of f1 = x is mop.lb[1] = 0
+    # min of g is 1, min of h is 1 - sqrt(ub[1]) = 0
+    return zeros(2);
+end
+
 function get_objectives(mop::ZDT2)
     h(f1,g) = 1 - ( f1 / g )^2;
     g(x) = 1 + 9 / (num_vars(mop) - 1) * sum(x[2:end]);
@@ -59,6 +65,7 @@ function get_objectives(mop::ZDT2)
     f2(x :: Vector{R} where R<:Real) = g(x) * h(f1(x), g(x))
     return [f1; f2]
 end
+get_ideal_point(mop::ZDT2) = zeros(2);
 
 function get_objectives(mop::ZDT3)
     h(f1,g) = 1 - sqrt( f1 / g ) - (f1 / g) * sin(10 * pi * f1);
@@ -67,6 +74,7 @@ function get_objectives(mop::ZDT3)
     f2(x :: Vector{R} where R<:Real) = g(x) * h(f1(x), g(x))
     return [f1; f2]
 end
+get_ideal_point(mop::ZDT3) = zeros(2);
 
 function get_objectives(mop::ZDT4)
     h(f1,g) = 1 - sqrt( f1 / g )
@@ -75,6 +83,7 @@ function get_objectives(mop::ZDT4)
     f2(x :: Vector{R} where R<:Real) = g(x) * h(f1(x), g(x))
     return [f1; f2]
 end
+get_ideal_point(mop::ZDT4) = zeros(2);
 
 function get_objectives(mop::ZDT6)
     h(f1,g) = 1 - ( f1 / g )^2;
@@ -83,7 +92,7 @@ function get_objectives(mop::ZDT6)
     f2(x :: Vector{R} where R<:Real) = g(x) * h(f1(x), g(x));
     return [f1; f2]
 end
-
+get_ideal_point(mop::ZDT6) = zeros(2);
 
 function get_points( sample_func :: SamplingFunction, mop :: Union{ZDT1,ZDT2,ZDT4},
         ::Val{:ParetoSet}, num_points :: Int; method = :regular )
@@ -95,7 +104,6 @@ function get_points( sample_func :: SamplingFunction, mop :: Union{ZDT1,ZDT2,ZDT
     end
     return [ [x; zeros( num_vars(mop) -1 )] for x in x_range ]
 end
-
 
 function get_points( sample_func :: SamplingFunction, mop :: Union{ZDT6},
         ::Val{:ParetoSet}, num_points :: Int; method = :regular )
