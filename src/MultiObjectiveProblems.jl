@@ -76,7 +76,6 @@ function get_omega_function( mop :: M where M <: MOP)
 
             JuMP.optimize!(prob)
             ω = -JuMP.value(α);
-            @show JuMP.value.(d);
             return ω 
         catch e
             return -Inf
