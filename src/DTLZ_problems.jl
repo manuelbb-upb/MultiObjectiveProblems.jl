@@ -3,6 +3,7 @@
 
 # DTLZ8 & DTLZ9 not supported yet due to constraints...
 export DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6, DTLZ7, DTLZ;
+export get_ideal_point;
 
 dtlz_ref_string = """Deb et. al - "Scalable Test Problems for Evolutionary Multiobjective Optimization"."""
 
