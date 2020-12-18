@@ -54,7 +54,7 @@ for i = 1 : 7
     help_text = """
     $(dtlz_descriptor(1, n_vars, M))
 
-    $(pareto_front_descriptions[i]).
+    $(pareto_front_descriptions[i])
     """
     
     typename = Symbol("DTLZ", i); 

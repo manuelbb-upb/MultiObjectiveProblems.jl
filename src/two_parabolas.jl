@@ -1,6 +1,26 @@
 export TwoParabolasConstrained, TwoParabolasUnconstrained;
 
+function two_parabolas_doc_str(symb) 
+    return """
+    The canonical two parobola problem with two objectives taking two
+    decision variables.
+
+    ```math
+        \\min_{𝐱 ∈ X } 
+        \\begin{bmatrix}
+        (x₁ - 1)² + (x₂ - 1)² \\\\
+        (x₁ + 1)² + (x₂ + 1)²
+        \\end{bmatrix},
+    ```
+
+    where ``X = $(symb)``.
+    """
+end
+
+@doc two_parabolas_doc_str("ℝ²") 
 struct TwoParabolasUnconstrained <: MOP end;
+
+@doc two_parabolas_doc_str("[\\mathrm{lb}, \\mathrm{ub}]^2") 
 @with_kw struct TwoParabolasConstrained <: MOP
     lb :: Union{R,Vector{R}} where R<:Real = -4.0;
     ub :: Union{R,Vector{R}} where R<:Real = 4.0;

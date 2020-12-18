@@ -41,3 +41,9 @@ We can retrieve them individually as
 f1, f2 = get_objectives(mop);
 ```
 They take vector valued arguments of type `Vector{R} where R<:Real`.
+
+Usually, the problem type (`TwoParabolasUnconstrained`) has a docstring 
+containing some information:
+```@docs
+TwoParabolasUnconstrained
+```

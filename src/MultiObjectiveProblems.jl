@@ -107,7 +107,8 @@ function get_ideal_point( ::MOP ) end;
 Get an object representing the Pareto Set of `mop`.
 Possible return types are `FixedPointSet` and `SamplingFunction`.
 
-See also: [`get_points`](@ref), [`get_scatter_points`](@ref)
+See also: [`get_points`](@ref), [`get_scatter_points`](@ref), [`SamplingFunction`](@ref), 
+[`FixedPointSet`](@ref)
 """
 function get_pareto_set( :: MOP ) end;
 
@@ -117,7 +118,8 @@ function get_pareto_set( :: MOP ) end;
 Get an object representing the Pareto Front of `mop`.
 Possible return types are `FixedPointSet` and `SamplingFunction`.
 
-See also: [`get_points`](@ref), [`get_scatter_points`](@ref)
+See also: [`get_points`](@ref), [`get_scatter_points`](@ref), [`SamplingFunction`](@ref), 
+[`FixedPointSet`](@ref)
 """
 function get_pareto_front( :: MOP ) end;
 
