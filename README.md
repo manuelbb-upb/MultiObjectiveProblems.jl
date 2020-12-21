@@ -7,7 +7,7 @@ It is an early work-in-progress side project.
 Currently, only some real-valued problems with real-valued arguments are included,
 mainly problems from the ZDT and DTLZ family.
 
-Please refer to the [documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://manuelbb.gitlab.io/MultiObjectiveProblems.jl/dev) for usage information.
+Please refer to the [documentation](https://manuelbb.gitlab.io/MultiObjectiveProblems.jl/dev) for usage information.
 
 ## Installation
 This package is not yet registered in the General Registry.
