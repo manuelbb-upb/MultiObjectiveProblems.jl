@@ -19,7 +19,7 @@ Pkg.add(url = "https://gitlab.com/manuelbb/multiobjectiveproblems.jl.git")
 
 I try to keep the versioning somewhat up-to-date manually, as long as `PackageDev` does not support GitLab.
 
-## What about the heavy dependenies? `ForwardDiff`, `OSQP`, `NLopt` etc.
+## What about the heavy dependencies? `ForwardDiff`, `OSQP`, `NLopt` etc.
 
 * `ForwardDiff` is used to provide gradient information for the objectives by means of automatic differentiation.
 * `JuMP` and `OSQP` are required to calculate the *criticality* of a decision vector using the above gradients.
