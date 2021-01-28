@@ -8,9 +8,11 @@ using Parameters: @with_kw
 import NLopt;    # for ZDT4 local critical set
 
 export MOP, SamplingFunction, FixedPointSet, Constraints, Box
+export num_objectives, num_vars;
 export get_objectives, get_vector_objective, get_gradients, get_omega_function, constraints,
     get_pareto_set, get_pareto_front, get_points, get_scatter_arrays, get_scatter_points,
-    get_random_point, get_ideal_point, get_critical_set, get_critical_front;
+    get_random_point, get_ideal_point, get_critical_set, get_critical_front,
+    get_starting_point;
 export sampling_methods;
 
 abstract type Constraints end;
@@ -96,6 +98,13 @@ function get_random_point( mop:: M where M <: MOP )
         return lb .+ w .* rand( length(lb) );
     end
 end
+
+@doc """
+Get a starting point for the problem.
+If the problem `mop` does not specify its own function, then 
+a random point is returned for box constrained problems and `nothing` else.
+"""
+get_starting_point( mop :: M where M<: MOP, args...; kwargs...) = get_random_point(mop);
 
 # non-mandatory and not implemented by default
 @doc "Return the ideal (or an utopia) point of the problem."
@@ -226,5 +235,6 @@ include("two_parabolas.jl");
 include("ZDT_problems.jl");
 include("DTLZ_problems.jl");
 include("lovison_problems.jl")
+include("MHT_problems.jl")
     
 end
