@@ -1,4 +1,4 @@
-export MHT, MHT1, MHT2, MHT3,MHT4,MHT5,MHT6;
+export MHT, MHT1, MHT2, MHT3,MHT4,MHT5,MHT6,MHT7;
 export CheapFunction, ExpensiveFunction;
 
 # Wrappers for Heterogenous Problems
@@ -24,14 +24,6 @@ $(mht_ref_string)
 """
 abstract type MHT <: MOP end;
 
-# some ipmlementations that some problems share 
-
-function get_pareto_set( mop ::Union{MHT1, MHT3, MHT4,MHT5,MHT6} )
-    return SamplingFunction( mop, :ParetoSet, [:regular, :random] );
-end
-function get_pareto_front( mop :: Union{MHT1, MHT3, MHT4,MHT5,MHT6} )
-    return SamplingFunction( mop, :ParetoFront, [:regular, :random] );
-end
 ########## MHT1 ##############
 @doc """
     MHT1()
@@ -359,12 +351,79 @@ mht6_points = [
 ]
 get_starting_point( ::MHT6, N :: Int64) = mht6_points[:,1 + (N-1) % 10 ];
 
+########## MHT7 ##############
+@doc """
+    MHT7()
+
+Bi-Objective, tri-variate problem MHT7 (T7) from
+$(mht_ref_string).
+
+Box constraints [0, 30]^3
+convex objectives, convex Pareto Front.
+9
+``f₁`` expensive, ``f₂`` cheap.
+
+The objectives are given as 
+```math 
+\\begin{aligned}
+    f_1( \\mathbf{x} ) &= Σᵢ xᵢ⁴ + Σᵢ xᵢ³
+    f_2( \\mathbf{x} ) &= Σᵢ xᵢ
+\\end{aligned}
+```
+"""
+struct MHT7 <: MHT end;
+
+constraints( mop :: MHT7 ) = Box(
+   zeros(3),
+   fill(30.0,3)
+);
+
+num_vars( mop :: MHT6 ) = 3;
+num_objectives( mop :: MHT6 ) = 2;
+
+function get_objectives( mop :: MHT7 )
+    f1 = ExpensiveFunction(
+        function( x :: Vector{R} where R<:Real)
+            sum( x.^4 ) + sum( x.^3 )
+        end
+    );
+    f2 = CheapFunction( 
+        function( x :: Vector{R} where R<:Real)
+            sum( x )
+        end
+    );
+    return [f1, f2]
+end
+
+get_ideal_point( mop :: MHT7 ) = zeros(2);
+
+mht7_points = [
+    24.4417 27.4013 8.3549 28.9467 28.7150 4.2566 23.7662 1.0714 20.3621 11.7668;
+    27.1738 18.9708 16.4064 4.7284 14.5613 12.6528 28.7848 25.4739 22.7322 19.6643;
+    3.8096 2.9262 28.7252 29.1178 24.0084 27.4721 19.6722 28.0198 22.2940 5.1356    
+];
+get_starting_point( ::MHT7, N :: Int64) = mht7_points[:,1 + (N-1) % 10 ];
+
 ##########################################################################
 # Pareto Sets when individual minima / other points are connected by a line
 
+function get_pareto_set( mop :: M where M<:MHT )
+    return SamplingFunction( mop, :ParetoSet, [:regular, :random] );
+end
+function get_pareto_front( mop :: M where M<:MHT )
+    return SamplingFunction( mop, :ParetoFront, [:regular, :random] );
+end
+
 function individual_minima(::MHT1)
-    x_min1 = [ -10.0 ;  0 ];
-    x_min2 = [ 0; -10.0 ];
+    x_min1 = [ 10.0 ;  0 ];
+    x_min2 = [ 0; 10.0 ];
+    x_diff = x_min2 .- x_min1
+    return x_min1, x_min2, x_diff
+end
+
+function individual_minima(::MHT2)
+    x_min1 = 1/√2 .* ones(2);
+    x_min2 = [1/√2; -π/2];
     x_diff = x_min2 .- x_min1
     return x_min1, x_min2, x_diff
 end
@@ -375,6 +434,7 @@ function individual_minima(::MHT3)
     x_diff = x_min2 .- x_min1
     return x_min1, x_min2, x_diff
 end
+
 
 function individual_minima(mop::MHT4)
     x_min1 = [ zeros(mop.n_vars-1); -10.0 ];
@@ -390,14 +450,8 @@ function individual_minima(mop::MHT5)
     return x_min1, x_min2, x_diff
 end
 
-function individual_minima(mop::MHT6)
-    x_min1 = [100.0; 100.0];
-    x_min2 = [0.0; 100.0]
-    x_diff = x_min2 .- x_min1
-    return x_min1, x_min2, x_diff
-end
 
-function get_points( sample_func :: SamplingFunction, mop :: Union{MHT1,MHT3,MHT4,MHT5,MHT6}, 
+function get_points( sample_func :: SamplingFunction, mop :: Union{MHT1,MHT2,MHT3,MHT4,MHT5}, 
     ::Val{:ParetoSet}, num_points :: Int; method = :regular )
 
     if method == :regular
@@ -411,10 +465,45 @@ function get_points( sample_func :: SamplingFunction, mop :: Union{MHT1,MHT3,MHT
     return [ x_min1 .+ τ .* x_diff for τ in t_range ]
 end
 
-function get_points( sample_func :: SamplingFunction, mop :: Union{MHT1,MHT3,MHT4,MHT5,MHT6},
+
+function get_points( sample_func :: SamplingFunction, mop :: MHT6,
+    ::Val{:ParetoSet}, num_points :: Int; method = :regular )
+    α_min = 1/101;
+    α_max = 1/(1e-12 + 1);
+
+    num_p1 = floor(Int, num_points/2);
+    num_p2 = num_points - num_p1;
+
+    if method == :regular
+        α_range = num_p1 == 1 ? [0.5,] : range(α_min, α_max; length = num_p1 );
+    elseif method == :random
+        α_range = max.( α_min .+ rand(num_p1), α_max ) ;
+    end  
+
+    ps₁ = [ [sqrt( (1-α)/(2*α) ); 1/α-1] for α ∈ α_range ];
+
+    α_min₂ = 1/(2*100^2 + 1);
+    α_range₂ = num_p2 == 1 ? [0.5,] : range(α_min₂, α_min; length = num_p2 );
+
+    ps₂ = [ [sqrt( (1-α)/(2*α) ); 100.0] for α ∈ α_range₂ ];
+
+    return [ ps₁; ps₂ ]
+end
+
+
+function get_points( sample_func :: SamplingFunction, mop :: MHT7,
+    ::Val{:ParetoSet}, num_points :: Int; method = :regular )
+    @warn "Problem has a single Pareto optimum. 
+    Returning it $(num_points) times for compatibility."
+    return [ zeros(2) for i = 1 : num_points ];
+end
+
+
+function get_points( sample_func :: SamplingFunction, mop :: Union{MHT1,MHT2,MHT3,MHT4,MHT5,MHT6,MHT7},
     ::Val{:ParetoFront}, num_points :: Int; method = :regular )
 
     pset = get_points( sample_func, mop, Val(:ParetoSet), num_points; method );
+    @show pset[1]
     F = get_vector_objective( mop );
     return F.( pset );
 end
