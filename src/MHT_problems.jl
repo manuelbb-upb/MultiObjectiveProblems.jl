@@ -14,7 +14,9 @@ end
 (F::ExpensiveFunction)( args...; kwargs... ) = F.f( args...; kwargs...);
 
 ####### General Setup ###########
-mht_ref_string = "Thomann, 2019 - Doctoral Thesis: A Trust Region Approach for Multi-Objective Heterogenous Optimization";
+mht_ref_string = "Thomann, 2019, 
+“Doctoral Thesis: A Trust Region Approach for 
+Multi-Objective Heterogenous Optimization”";
 @doc """
     abstract type MHT <: MOP end
 
@@ -366,7 +368,7 @@ convex objectives, convex Pareto Front.
 The objectives are given as 
 ```math 
 \\begin{aligned}
-    f_1( \\mathbf{x} ) &= Σᵢ xᵢ⁴ + Σᵢ xᵢ³
+    f_1( \\mathbf{x} ) &= Σᵢ xᵢ⁴ + Σᵢ xᵢ³,\\\\
     f_2( \\mathbf{x} ) &= Σᵢ xᵢ
 \\end{aligned}
 ```
