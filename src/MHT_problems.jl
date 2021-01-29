@@ -214,7 +214,7 @@ end;
 
 constraints( mop :: MHT4 ) = Box(
     fill(-10.0, mop.n_vars),
-    fill(2.0, mop.n_vars)
+    fill(10.0, mop.n_vars)
 );
 num_vars( mop :: MHT4 ) = mop.n_vars;
 num_objectives( mop :: MHT4 ) = 2;
@@ -380,8 +380,8 @@ constraints( mop :: MHT7 ) = Box(
    fill(30.0,3)
 );
 
-num_vars( mop :: MHT6 ) = 3;
-num_objectives( mop :: MHT6 ) = 2;
+num_vars( mop :: MHT7 ) = 3;
+num_objectives( mop :: MHT7 ) = 2;
 
 function get_objectives( mop :: MHT7 )
     f1 = ExpensiveFunction(
@@ -505,7 +505,6 @@ function get_points( sample_func :: SamplingFunction, mop :: Union{MHT1,MHT2,MHT
     ::Val{:ParetoFront}, num_points :: Int; method = :regular )
 
     pset = get_points( sample_func, mop, Val(:ParetoSet), num_points; method );
-    @show pset[1]
     F = get_vector_objective( mop );
     return F.( pset );
 end
