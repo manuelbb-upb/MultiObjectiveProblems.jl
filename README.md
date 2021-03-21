@@ -9,6 +9,10 @@ mainly problems from the ZDT and DTLZ family.
 
 Please refer to the [documentation](https://manuelbb-upb.github.io/MultiObjectiveProblems.jl/dev) for usage information.
 
+This project was founded by the European Region Development Fund.
+<img alt="EFRE Logo EU" src="https://www.efre.nrw.de/fileadmin/Logos/EU-Fo__rderhinweis__EFRE_/EFRE_Foerderhinweis_englisch_farbig.jpg" width=45% />
+<img alt="EFRE Logo NRW" src="https://www.efre.nrw.de/fileadmin/Logos/Programm_EFRE.NRW/Ziel2NRW_RGB_1809_jpg.jpg" width=45% />
+
 ## Installation
 This package is not yet registered in the General Registry.
 You can add it via 
