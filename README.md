@@ -1,23 +1,21 @@
 # MultiObjectiveProblems
 
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://manuelbb.gitlab.io/multiobjectiveproblems.jl/dev)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://manuelbb-upb.github.io/MultiObjectiveProblems.jl/dev)
 
 This Julia package provides some test problems for Multiobjective Optimization.
 It is an early work-in-progress side project.
 Currently, only some real-valued problems with real-valued arguments are included,
 mainly problems from the ZDT and DTLZ family.
 
-Please refer to the [documentation](https://manuelbb.gitlab.io/multiobjectiveproblems.jl/dev) for usage information.
+Please refer to the [documentation](https://manuelbb-upb.github.io/MultiObjectiveProblems.jl/dev) for usage information.
 
 ## Installation
 This package is not yet registered in the General Registry.
 You can add it via 
 ```julia 
 using Pkg
-Pkg.add(url = "https://gitlab.com/manuelbb/multiobjectiveproblems.jl.git")
+Pkg.add(url = "https://github.com/manuelbb-upb/MultiObjectiveProblems.jl.git")
 ```
-
-I try to keep the versioning somewhat up-to-date manually, as long as `PackageDev` does not support GitLab.
 
 ## What about the heavy dependencies? `ForwardDiff`, `OSQP`, `NLopt` etc.
 
