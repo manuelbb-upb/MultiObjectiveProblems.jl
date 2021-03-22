@@ -11,6 +11,7 @@ OSQP = "ab2f91bb-94b4-55e3-9ba0-7f65df51de79"
 Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
 
 [compat]
+OSQP = "0.6"
 julia = "1.5"
 
 [extras]
